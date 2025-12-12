@@ -8,7 +8,7 @@ import numpy as np
 import time
 from collections import Counter
 
-NASA_API_KEY = "ffpRcNXaeVNObQwp0jdDAlo0Vjs2fhuREG0v8ViD"
+NASA_API_KEY = "DEMO_KEY"
 NASA_NEO_FEED_URL = "https://api.nasa.gov/neo/rest/v1/feed"
 NASA_NEO_LOOKUP_URL = "https://api.nasa.gov/neo/rest/v1/neo/"
 
@@ -373,4 +373,5 @@ def main():
     print(f"{'=' * 60}")
 
 if __name__ == "__main__":
+
     main()
