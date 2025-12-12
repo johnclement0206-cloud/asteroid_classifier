@@ -5,7 +5,7 @@ import random
 import numpy as np
 from datetime import datetime, timedelta
 
-NASA_API_KEY = "ffpRcNXaeVNObQwp0jdDAlo0Vjs2fhuREG0v8ViD"
+NASA_API_KEY = "DEMO_KEY"
 NASA_NEO_FEED_URL = "https://api.nasa.gov/neo/rest/v1/feed"
 
 # Old neural network architecture (for backward compatibility)
@@ -307,4 +307,5 @@ def main():
     )
 
 if __name__ == "__main__":
+
     main()
