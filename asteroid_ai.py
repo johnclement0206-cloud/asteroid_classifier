@@ -138,7 +138,7 @@ def process_asteroid_data(asteroids):
     hazardous = int(y.sum().item())
     safe = len(features) - hazardous
     
-    print(f"✓ Processed {len(features)} valid asteroids")
+    print(f"\n✓ Processed {len(features)} valid asteroids")
     print(f"  • Hazardous: {hazardous} ({hazardous/len(features)*100:.1f}%)")
     print(f"  • Safe: {safe} ({safe/len(features)*100:.1f}%)")
     print(f"  • Class Imbalance Ratio: 1:{safe/hazardous if hazardous > 0 else 0:.1f}")
@@ -163,14 +163,12 @@ def train_model(X, y, epochs=400, batch_size=32, lr=0.0005, val_split=0.2):
     pos_weight = torch.tensor([neg_count / pos_count * 1.5]) if pos_count > 0 else torch.tensor([1.0])  # 1.5x multiplier
     
     print(f"\n{'=' * 60}")
-    print("Training Configuration:")
-    print(f"{'=' * 60}")
+    print("\nTraining Configuration:")
     print(f"  Training samples: {train_size}")
     print(f"  Validation samples: {val_size}")
     print(f"  Positive class weight: {pos_weight.item():.2f}")
     print(f"  Batch size: {batch_size}")
     print(f"  Learning rate: {lr}")
-    print(f"{'=' * 60}")
     
     model = AsteroidNet(input_size=X.shape[1], hidden_dims=[128, 64, 32])
     criterion = nn.BCELoss(reduction='none')
@@ -290,27 +288,21 @@ def evaluate_model(model, X, y, threshold=0.3):  # Lower threshold to catch more
         detected_hazardous = int(tp)
         missed_hazardous = int(fn)
     
-    print(f"\n{'=' * 60}")
-    print(f"MODEL PERFORMANCE METRICS (Threshold: {threshold})")
-    print(f"{'=' * 60}")
+    print(f"\nMODEL PERFORMANCE METRICS (Threshold: {threshold})")
     print(f"\nConfusion Matrix:")
     print(f"  True Positives:  {tp:>5.0f}  (Correctly identified hazardous)")
     print(f"  False Positives: {fp:>5.0f}  (Safe marked as hazardous)")
     print(f"  True Negatives:  {tn:>5.0f}  (Correctly identified safe)")
     print(f"  False Negatives: {fn:>5.0f}  (Hazardous marked as safe)")
     
-    print(f"\n{'=' * 60}")
     print(f"Classification Metrics:")
-    print(f"{'=' * 60}")
     print(f"  Overall Accuracy:  {accuracy * 100:>6.2f}%")
     print(f"  Precision:         {precision * 100:>6.2f}%  (How many predicted hazards are real)")
     print(f"  Recall:            {recall * 100:>6.2f}%  (How many real hazards we catch)")
     print(f"  F1 Score:          {f1 * 100:>6.2f}%  (Harmonic mean of P&R)")
     print(f"  Specificity:       {specificity * 100:>6.2f}%  (True negative rate)")
     
-    print(f"\n{'=' * 60}")
     print(f"Class-Specific Performance:")
-    print(f"{'=' * 60}")
     print(f"  Hazardous Asteroids: {total_hazardous}")
     print(f"    ✓ Detected:  {detected_hazardous} ({detected_hazardous/total_hazardous*100 if total_hazardous > 0 else 0:.1f}%)")
     print(f"    ✗ Missed:    {missed_hazardous} ({missed_hazardous/total_hazardous*100 if total_hazardous > 0 else 0:.1f}%)")
@@ -322,10 +314,8 @@ def evaluate_model(model, X, y, threshold=0.3):  # Lower threshold to catch more
 
 # Main execution
 def main():
-    print("=" * 60)
     print(" " * 15 + "NASA Asteroid AI Predictor")
-    print(" " * 10 + "Powered by NASA NeoWs API & PyTorch")
-    print("=" * 60)
+    print(" " * 10 + "Powered by NASA NeoWs API & PyTorch\n")
     
     asteroids = fetch_asteroid_feed_chunked(days=30)
     if not asteroids:
@@ -342,9 +332,7 @@ def main():
     model = train_model(X, y, epochs=400, batch_size=32)
     evaluate_model(model, X, y)
     
-    print("\n" + "=" * 60)
-    print("Sample Predictions (First 5 Asteroids):")
-    print("=" * 60)
+    print("\nSample Predictions (First 5 Asteroids):")
     
     model.eval()
     with torch.no_grad():
@@ -360,7 +348,7 @@ def main():
             print(f"  Predicted: {predicted} (prob: {hazard_prob*100:.1f}%, conf: {confidence:.1f}%) {match}")
             print(f"  Actual:    {actual}")
     
-    save_path = r'C:\Users\Yasmin Reyes\Documents\asteroid ai\asteroid_model.pth'
+    save_path = r'C:\Users\Documents\GitHub\asteroid_classifier\asteroid_model.pth'
     torch.save({
         'model_state_dict': model.state_dict(),
         'norm_params': norm_params,
@@ -368,9 +356,7 @@ def main():
         'threshold': 0.3  # Save optimal threshold
     }, save_path)
     
-    print(f"\n{'=' * 60}")
-    print(f"✓ Model saved to '{save_path}'")
-    print(f"{'=' * 60}")
+    print(f"\n✓ Model saved to '{save_path}'")
 
 if __name__ == "__main__":
 

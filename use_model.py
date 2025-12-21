@@ -57,6 +57,7 @@ class AsteroidNet(nn.Module):
 
 # Load trained model and normalization parameters (supports old and new models)
 def load_model(model_path=r'C:\Users\Yasmin Reyes\Documents\asteroid ai\asteroid_model.pth'):
+def load_model(model_path=r'C:\Users\Documents\GitHub\asteroid_classifier\asteroid_model.pth'):
     checkpoint = torch.load(model_path, weights_only=False)
     
     # Check if this is a new model with config
@@ -178,7 +179,6 @@ def display_prediction(asteroid, features, hazard_prob, threshold=0.4):
     
     print("\n" + "=" * 70)
     print(f"Asteroid: {asteroid['name']}")
-    print("=" * 70)
     
     print(f"Features:")
     print(f"  • Diameter: {features[0]:.4f} - {features[1]:.4f} km (avg: {features[2]:.4f})")
@@ -209,11 +209,9 @@ def test_random_asteroids(model, norm_params, count=5, threshold=0.4):
     if not asteroids:
         print("No asteroids available for testing")
         return
-    
-    print("\n" + "=" * 70)
+
     print(f"TESTING MODEL ON {len(asteroids)} RANDOM ASTEROIDS")
     print(f"Decision Threshold: {threshold*100:.0f}%")
-    print("=" * 70)
     
     correct = 0
     total = 0
@@ -235,14 +233,11 @@ def test_random_asteroids(model, norm_params, count=5, threshold=0.4):
     
     if total > 0:
         accuracy = (correct / total) * 100
-        print("\n" + "=" * 70)
         print(f"SUMMARY")
-        print("=" * 70)
         print(f"  Total Tested: {total}")
         print(f"  Correct: {correct}")
         print(f"  Incorrect: {total - correct}")
         print(f"  Accuracy: {accuracy:.2f}%")
-        print("=" * 70)
 
 # Predict on custom asteroid features
 def predict_custom(model, norm_params, diameter_min, diameter_max, velocity, distance_km, magnitude, threshold=0.4):
@@ -266,9 +261,7 @@ def predict_custom(model, norm_params, diameter_min, diameter_max, velocity, dis
     is_hazardous = hazard_prob > threshold
     confidence = abs(hazard_prob - threshold) * 100 / (1 - threshold)
     
-    print("\n" + "=" * 70)
     print("CUSTOM ASTEROID PREDICTION")
-    print("=" * 70)
     print(f"Input Features:")
     print(f"  • Diameter: {diameter_min:.3f} - {diameter_max:.3f} km (avg: {diam_avg:.3f})")
     print(f"  • Velocity: {velocity:,.0f} km/h")
@@ -279,16 +272,13 @@ def predict_custom(model, norm_params, diameter_min, diameter_max, velocity, dis
     print(f"  • Hazard Probability: {hazard_prob * 100:.2f}%")
     print(f"  • Confidence: {confidence:.2f}%")
     print(f"  • Classification: {'⚠️  POTENTIALLY HAZARDOUS' if is_hazardous else '✓ SAFE'}")
-    print("=" * 70)
     
     return hazard_prob, is_hazardous
 
 # Main demonstration
 def main():
-    print("=" * 70)
     print(" " * 20 + "NASA Asteroid Predictor")
     print(" " * 15 + "Testing on Live API Data")
-    print("=" * 70)
     
     model, norm_params = load_model()
     
